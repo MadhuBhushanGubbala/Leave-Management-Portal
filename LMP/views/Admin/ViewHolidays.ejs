@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LMP|<%= title %></title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css"/>
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/stylesheets/simple-sidebar.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+
+
+</head>
+<body>
+    <%- include('./HRNavs.ejs') %>
+    
+    <div id="page-content-wrapper">
+        <div class="container-fluid xyz">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1>Holidays</h1>
+
+                    <div style="height:717px; overflow: auto">
+                        <% if(has === 1){ %>
+                        <table id="example" class="display" cellspacing="0" style="height: 10%; overflow: auto;">
+                            <thead>
+                            <tr>
+                                <th>Day</th>
+                                <th>Month</th>
+                                <th>Year</th>
+                                <th>Event</th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                                <th>Day</th>
+                                <th>Month</th>
+                                <th>Year</th>
+                                <th>Event</th>
+                            </tr>
+                            </tfoot>
+                            <tbody>
+                            <% for(var i = 0;i < holidays.length;i++){ %>
+                            <tr>
+                                <td><%= holidays[i].day %></td>
+                                <td><%= holidays[i].month %></td>
+                                <td><%= holidays[i].year %></td>
+                                <td><%= holidays[i].event %></td>
+                            </tr>
+                            <% } %>
+                            </tbody>
+                        </table>
+                        <% }else{ %>
+                        <p>Holidays not found</p>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /#page-content-wrapper -->
+
+</div>
+<!-- /#wrapper -->
+<!-- jQuery -->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.js" charset="UTF-8"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.js" charset="UTF-8"></script>
+<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+<script src="/javascripts/sidebar_menu.js"></script>
+<script>
+
+    $(document).ready(function () {
+
+
+        $('#example').dataTable({
+            /* No ordering applied by DataTables during initialisation */
+            "order": []
+        });
+        for (i = new Date().getFullYear(); i > 1950; i--) {
+            $('#year').append($('<option />').val(i).html(i));
+        }
+
+
+        // Setup - add a text input to each footer cell
+        $('#example tfoot th').each(function () {
+            var title = $(this).text();
+            if (title != " ") {
+                $(this).html('<input type="text" class="form-control" placeholder="Search ' + title + '" />');
+            }
+        });
+
+        // DataTable
+        var table = $('#example').DataTable();
+
+        // Apply the search
+        table.columns().every(function () {
+            var that = this;
+
+            $('input', this.footer()).on('keyup change', function () {
+                if (that.search() !== this.value) {
+                    that
+                            .search(this.value)
+                            .draw();
+                }
+            });
+        });
+    });
+</script>
+</body>
+
+
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LMP|<%= title %></title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css"/>
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/stylesheets/simple-sidebar.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+
+
+</head>
+<body>
+    <%- include('./ManagerNav.ejs') %>
+
+    <!-- /#sidebar-wrapper -->
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <div class="container-fluid xyz">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div id="menu1">
+                        <h1>Profile</h1>
+                        <br>
+                        <form class="form-group-sm" method="get" action="/manager/view-all-personal-projects">
+                            <h4>Name : <label id="name">Admin</label></h4>
+                            <h4>Email : <label id="type"><%= employee.email %></label></h4>
+                            <h4>Date of Birth : <label
+                                        id="dob"><%= moment(employee.dateOfBirth).format('MMMM Do YYYY') %></label></h4>
+                            <h4>Department : <label id="department"><% if(!employee.department){%>
+                                    <%="N/A"%>
+                                    <%
+                                    }
+                                    else{%>
+                                    <%=employee.department%>
+                                    <%}%></label></h4>
+                            <h4>Designation : <label id="designation"><% if(!employee.designation){%>
+                                    <%="N/A"%>
+                                    <%
+                                    }
+                                    else{%>
+                                    <%=employee.designation%>
+                                    <%}%></label></h4>
+                            <%if(employee.type=="project_manager"){%>
+                            <h4>Projects : <label id="projects">
+                                    <button type="submit" class="form-control">View Projects</button>
+                                </label></h4>
+
+                            <% if(employee.Skills.length > 0){ %>
+
+                            <h4>Skills:</h4>
+                            <div style="height: 250px; overflow: auto;">
+                                <ul class="list-group" id="skills">
+                                    <%
+                                    employee.Skills.forEach(function(val){
+                                    if(val != ""){ %>
+                                    <li class="list-group-item"><%= val %></li>
+
+                                    <% }
+                                    }) %>
+
+                                </ul>
+                            </div>
+                            <% }else{ %>
+                            <h4>Skills : <label id="skills">N/A</label></h4>
+                            <% } %>
+                            <%}%>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /#page-content-wrapper -->
+
+</div>
+<!-- /#wrapper -->
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.js" charset="UTF-8"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.js" charset="UTF-8"></script>
+
+
+<script src="/javascripts/sidebar_menu.js"></script>
+<script>
+
+    $(document).ready(function () {
+        for (i = new Date().getFullYear(); i > 1900; i--) {
+            $('#year').append($('<option />').val(i).html(i));
+        }
+    });
+</script>
+</body>
+
+
+
+</html>
